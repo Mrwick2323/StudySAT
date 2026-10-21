@@ -1,0 +1,73 @@
+api to get a list of question ids:
+
+curl 'https://qbank-api.collegeboard.org/msreportingquestionbank-prod/questionbank/digital/get-questions' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://satsuiteeducatorquestionbank.collegeboard.org' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://satsuiteeducatorquestionbank.collegeboard.org/' \
+  -H 'sec-ch-ua: "Not;A=Brand";v="8", "Chromium";v="150", "Google Chrome";v="150"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Chrome OS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'user-agent: Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36' \
+  --data-raw '{"asmtEventId":99,"test":subject,"domain":domains}'
+
+dont change asmtEventId, im not sure what it does but its always 99.
+subject is an integer, either 1 or 2. 1 if youre searching for reading and writing questions, 2 if youre searching for math questions.
+domains is a string that acts as a list of question domains youre looking to search for.
+    Math question domains:
+        H - Algebra
+            Skills: Linear equations in one variable, Linear functions, Linear equations in two variables, Systems of two linear equations in two variables, Linear inequalities in one or two variables
+        P - Advanced Math
+            Skills: Nonlinear functions, Nonlinear equations in one variable and systems of equations in two variables, Equivalent expressions
+        Q - Problem-Solving and Data Analysis
+            Skills: "Ratios, rates, proportional relationships, and units", Percentages, One-variable data: distributions and measures of center and spread, Two-variable data: Models and scatterplots, Probability and conditional probability, Inference from sample statistics and margin of error, evaluating statistical claims: observational studies and experiments
+        S - Geometry and Trigonometry
+            Skills: Area and volume, "Lines, angles, and triangles", right triangles and trigonometry, circles.
+    Reading and writing question domains:
+        INI - Information and Ideas
+            Skills: Central Ideas and details, Inferences, Command of Evidence
+        CAS - Craft and Structure
+            Skills: Words in Context, Text Structure and Purpose, Cross-Text Connections
+        EOI - Expression of Ideas
+            Skills: Rhetorical Synthesis, Transitions
+        SEC - Standard English Conventions
+            Skills: Boundaries, "Form, Structure, and Sense" (this has two skills, the second one just has a bunch of commas)
+
+
+heres an example payload if you're trying to get a list of questions for reading and writing of INI, CAS, and EOI.
+
+{"asmtEventId":99,"test":1,"domain":"INI,CAS,EOI"}
+
+
+
+That api just returns the questions in this format (this is a specific question, but every question has the same keys, and the api returns a list of these json blocks):
+{"createDate":1691007959360,"external_id":"4e06110f-0c9b-48ea-88ab-a1004353ab6d","ibn":null,"pPcc":"SAT#INI","primary_class_cd":"INI","primary_class_cd_desc":"Information and Ideas","program":"SAT","questionId":"14189fbb","score_band_range_cd":3,"skill_cd":"CID","skill_desc":"Central Ideas and Details","updateDate":1691007959360,"uId":"4f773d7b-9ed0-42c8-9d52-7a2d53c3f944","difficulty":"E"}
+
+In order to get the actual question data, you need to send another api request.
+curl 'https://qbank-api.collegeboard.org/msreportingquestionbank-prod/questionbank/digital/get-question' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://satsuiteeducatorquestionbank.collegeboard.org' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://satsuiteeducatorquestionbank.collegeboard.org/' \
+  -H 'sec-ch-ua: "Not;A=Brand";v="8", "Chromium";v="150", "Google Chrome";v="150"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Chrome OS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'user-agent: Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36' \
+  --data-raw '{"external_id":the questions external_id (in questionid=14189fbb's case, its 4e06110f-0c9b-48ea-88ab-a1004353ab6d)}'
+
+This returns the question in the following format:
+
+{"vaultid":"5a4d918d-f760-4e38-aa8e-9276d92a9562","keys":["39d0572e-b5d9-4961-b1d0-f93bdc0010a2"],"rationale":"<p>Choice C is the best answer. The text describes how Miranda circulated, edited, and added footnotes to &ldquo;Letter to the Spanish Americans,&rdquo; and it claims that the letter and its author would have &ldquo;remained insignificant&rdquo; if it weren&rsquo;t for Miranda&rsquo;s efforts. </p><p>Choice A is incorrect. The text only says that Viscardo wrote the letter and that Miranda edited it: it never suggests that the original authorship of the letter is up for debate. Choice B is incorrect. This contradicts the text. The text says that Miranda edited and footnoted the letter, but it identifies Viscardo as the letter&rsquo;s author. It also never identifies certain arguments as more eloquent than others. Choice D is incorrect. This is outside the scope of the text. The paragraph describes Miranda&rsquo;s role in the creation and distribution of the letter, but it doesn&rsquo;t get into the effects of the letter on other people. </p>","origin":"proteus","stem":"<p>Which choice best states the main idea of the text?</p>","externalid":"4e06110f-0c9b-48ea-88ab-a1004353ab6d","stimulus":"<p>Having written the impassioned call to arms &ldquo;Letter to the Spanish Americans&rdquo; in 1791, Peruvian intellectual Juan Pablo Viscardo y Guzm&aacute;n is often considered a forerunner for the independence movements in Latin America. But Viscardo&rsquo;s role in history would have remained insignificant were it not for Venezuelan revolutionary Francisco de Miranda, who was handed the unpublished letter after Viscardo&rsquo;s death. Miranda not only helped circulate the letter, but his edits and footnotes to the text position Miranda as a central figure in the text&rsquo;s creation.</p>","templateclusterid":"e456fcf9-8ba7-4159-a283-4616038471ae","parenttemplatename":"OSP-KA-CID-H008","parenttemplateid":"","type":"mcq","position":"0","templateclustername":"","answerOptions":[{"id":"c762b6fc-5ebe-4369-aca2-7672f9870b9e","content":"<p>The original authorship of &ldquo;Letter to the Spanish Americans&rdquo; is disputed by contemporary historians.</p>"},{"id":"ecd4d1b7-2f6e-4b7a-acd1-8589dd28e07a","content":"<p>The majority of the most eloquently stated arguments in &ldquo;Letter to the Spanish Americans&rdquo; were written by Miranda.</p>"},{"id":"39d0572e-b5d9-4961-b1d0-f93bdc0010a2","content":"<p>Miranda played a crucial role in influencing the content and distribution of &ldquo;Letter to the Spanish Americans.&rdquo;&nbsp;</p>"},{"id":"6b772051-c79d-49c3-a4fd-b06e03ac7eba","content":"<p>&ldquo;Letter to the Spanish Americans&rdquo; persuaded many people in Latin America to pursue national independence.</p>"}],"correct_answer":["C"]}
+
+example payload for that same question:
+{"external_id":"4e06110f-0c9b-48ea-88ab-a1004353ab6d"}

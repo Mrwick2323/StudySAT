@@ -1,0 +1,397 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  color-scheme: light;
+  --brand: #3b3fd8;
+  --brand-strong: #2c2fae;
+  --brand-soft: #ecedfd;
+  --brand-line: #c7c9f6;
+  --on-brand: #ffffff;
+  --accent: #e8572f;
+  --accent-soft: #fff0ea;
+  --streak: #d9730d;
+
+  --ink: #15172e;
+  --ink-2: #33364f;
+  --muted: #5a5e7c;
+  --line: #e2e4ef;
+  --line-strong: #c4c7db;
+  --bg: #f5f6fb;
+  --surface: #ffffff;
+  --surface-2: #f0f1f8;
+
+  --success: #11774a;
+  --success-soft: #e4f5ec;
+  --success-line: #36a86f;
+  --danger: #b8252c;
+  --danger-soft: #fdeceb;
+  --danger-line: #e2656a;
+  --warning: #8a5300;
+  --warning-soft: #fff3dc;
+
+  --subject-rw: #0b7682;
+  --subject-rw-soft: #e2f4f5;
+  --subject-math: #7238c9;
+  --subject-math-soft: #f1eafc;
+
+  --focus: #1f6feb;
+  --figure-bg: transparent;
+
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 2px rgb(21 23 46 / 0.06);
+  --shadow: 0 1px 2px rgb(21 23 46 / 0.05), 0 6px 18px rgb(21 23 46 / 0.06);
+  --shadow-lg: 0 10px 40px rgb(21 23 46 / 0.12);
+
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-read: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, 'Noto Serif', Georgia, serif;
+  --font-math: math, 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Noto Sans Math', serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --gutter: 16px;
+  --page-max: 1140px;
+  --header-h: 64px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --brand: #8e92ff;
+    --brand-strong: #a9acff;
+    --brand-soft: #23264d;
+    --brand-line: #3c418a;
+    --on-brand: #0d0e22;
+    --accent: #ff8a65;
+    --accent-soft: #3a2119;
+    --streak: #ffad4d;
+
+    --ink: #eceefc;
+    --ink-2: #d0d3ec;
+    --muted: #a5a9c8;
+    --line: #2a2d4a;
+    --line-strong: #3d4166;
+    --bg: #0e1022;
+    --surface: #171a33;
+    --surface-2: #1f2342;
+
+    --success: #5ad49a;
+    --success-soft: #133325;
+    --success-line: #2f9a68;
+    --danger: #ff8a8f;
+    --danger-soft: #3a1619;
+    --danger-line: #c4474d;
+    --warning: #ffc266;
+    --warning-soft: #36270d;
+
+    --subject-rw: #5cd3dd;
+    --subject-rw-soft: #12343a;
+    --subject-math: #c39bff;
+    --subject-math-soft: #2c1f47;
+
+    --focus: #7cb2ff;
+    /* Question figures are drawn black on transparent, so give them paper. */
+    --figure-bg: #ffffff;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
+    --shadow-lg: 0 12px 40px rgb(0 0 0 / 0.45);
+  }
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.4rem);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0 0 0.75em;
+}
+
+a {
+  color: var(--brand-strong);
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  padding: 0.05em 0.4em;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--surface);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.05em 0.35em;
+  border-radius: 5px;
+  background: var(--surface-2);
+}
+
+/* Screen-reader-only text. `.sr-only` is also used by question bank content for long figure descriptions. */
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.875rem;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--brand);
+  color: var(--on-brand);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ==========================================================================
+   Question bank content
+   ========================================================================== */
+.rich {
+  max-width: 100%;
+}
+
+.rich > :last-child,
+.rich p:last-child {
+  margin-bottom: 0;
+}
+
+.rich p {
+  margin: 0 0 0.8em;
+}
+
+.rich ul,
+.rich ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.4em;
+}
+
+.rich figure {
+  margin: 0.75em 0;
+}
+
+.rich figure figure {
+  margin: 0;
+}
+
+.rich img,
+.rich svg {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Figures (graphs, diagrams, tables of data) get a "paper" background in dark mode. */
+.rich figure > svg,
+.rich .standalone_image img,
+.rich > svg,
+.rich p > svg {
+  background: var(--figure-bg);
+  border-radius: 8px;
+}
+
+.rich figure svg,
+.rich .standalone_image img {
+  display: block;
+  margin-inline: auto;
+}
+
+/* Legacy items render math as black-on-transparent images; invert them in dark mode. */
+@media (prefers-color-scheme: dark) {
+  .rich img.math-img {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  .rich figure > svg,
+  .rich .standalone_image img {
+    padding: 8px;
+  }
+}
+
+.rich img.math-img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.rich .table-scroll,
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0.75em 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rich table {
+  border-collapse: collapse;
+  margin-inline: auto;
+  min-width: min(100%, 14rem);
+  font-family: var(--font-ui);
+  font-size: 0.95em;
+}
+
+.rich th,
+.rich td {
+  border: 1px solid var(--line-strong);
+  padding: 0.45em 0.75em;
+  vertical-align: middle;
+}
+
+.rich th {
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+.rich math {
+  font-family: var(--font-math);
+  font-size: 1.08em;
+}
+
+.rich math[display='block'] {
+  margin: 0.6em 0;
+}
+
+/* Legacy question bank items style variables and emphasis with classes. */
+.rich .italic,
+.rich .inline_variable {
+  font-style: italic;
+}
+
+.rich .bold {
+  font-weight: 700;
+}
+
+.rich .underline {
+  text-decoration: underline;
+}
+
+.rich .paired_passage {
+  display: inline-block;
+  margin-top: 0.4em;
+  font-family: var(--font-ui);
+}
+
+.rich--passage {
+  font-family: var(--font-read);
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+
+.rich--stem {
+  font-family: var(--font-read);
+  font-size: 1.06rem;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
